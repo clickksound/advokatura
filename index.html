@@ -107,13 +107,13 @@
         смерти мусорскому
     </div>
 
-    <div id="audioControl">?? ВКЛ/ВЫКЛ</div>
+    <div id="audioControl">🎵 ВКЛ/ВЫКЛ</div>
 
     <script>
         // Генерация фоновых эффектов
         function createEffect(className, src) {
             const effect = document.createElement('img');
-            effect.className = effect ${className};
+            effect.className = `effect ${className}`;
             effect.src = src;
             effect.style.left = Math.random() * 100 + 'vw';
             effect.style.animationDelay = Math.random() * 5 + 's';

@@ -2,200 +2,246 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>t.me/badangels</title>
+    <title>t.me/badangels </title>
     <style>
-        body {
-            background: #000;
-            color: #fff;
+        body { 
             margin: 0;
-            padding: 20px;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            position: relative;
             overflow: hidden;
+            font-family: 'Courier New', monospace;
+            background: #000;
         }
-
-        .handle {
-            position: absolute;
-            font-size: 1.2em;
-            text-shadow: 0 0 5px rgba(255,255,255,0.3);
-            z-index: 2;
+        .ui-element {
+            position: fixed;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+            mix-blend-mode: screen;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
         }
-
-        #badangels { top: 20px; right: 20px; }
-        #advokat { top: 50px; right: 20px; }
-        #prosecutor { top: 20px; left: 20px; color: #ff4444; }
-
+        #badangels { top: 2vh; right: 2vw; font-size: 1.5em; }
+        #advokat { top: 8vh; right: 2vw; font-size: 1.2em; }
         .poem {
-            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 1.5em;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            text-shadow: 0 0 8px rgba(255,255,255,0.4);
-            z-index: 2;
+            font-size: 2em;
+            line-height: 1.5;
+            white-space: pre;
+        }
+        #connection-status {
+            bottom: 2vh;
+            left: 2vw;
+            font-size: 0.9em;
+        }
+        canvas {
+            filter: contrast(120%) brightness(90%);
         }
 
-        .gradient-text {
-            background: linear-gradient(45deg, #aaa, #fff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: bold;
+        /* Новая анимация текста */
+        .line {
+            display: block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: lineAppear 1s forwards;
+            margin: 15px 0;
+            position: relative;
         }
 
-        .effect {
-            position: absolute;
-            opacity: 0.4;
-            animation-timing-function: linear;
-            pointer-events: none;
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
-        .money-bill {
-            width: 120px;
-            animation: moneyFloat 15s infinite;
-            filter: hue-rotate(90deg);
-        }
-
-        @keyframes moneyFloat {
-            0% {
-                transform: translateY(-100vh) rotateX(0deg) rotateZ(0deg);
-            }
-            100% {
-                transform: translateY(100vh) rotateX(360deg) rotateZ(360deg);
+        @keyframes lineAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .dollar-sign {
-            color: #85bb65;
-            font-size: 24px;
-            animation: dollarFlow 8s infinite;
+        @keyframes flicker {
+            0% { color: #0f0; text-shadow: 0 0 10px #0f0; }
+            50% { color: #000; text-shadow: none; }
+            100% { color: #0f0; text-shadow: 0 0 10px #0f0; }
         }
 
-        @keyframes dollarFlow {
-            0% { transform: translateX(-100vw) rotate(0deg); }
-            100% { transform: translateX(100vw) rotate(360deg); }
-        }
+        /* Задержки для строк */
+        .line:nth-child(1) { animation-delay: 1s; }
+        .line:nth-child(2) { animation-delay: 2s; }
+        .line:nth-child(3) { animation-delay: 3s; }
+        .line:nth-child(4) { animation-delay: 4s; }
+        .line:nth-child(5) { animation-delay: 5s; }
+        .line:nth-child(6) { animation-delay: 6s; }
 
-        #audioControl {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 3;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        .connection-status {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            text-shadow: 0 0 5px #00ff00;
-            z-index: 4;
-        }
-
-        /* Базовые изображения в Base64 */
-        .money-img {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACLElEQVR4nO2aQY7DIAxFXc1ZcoZepWfpVXqWHrE7VhOjEBJIwHhI1PcrCzD+PrYJEEIIIYQQQgghhBBCCCGEEEIIIeR1uK4rXJYlzPMcpmkK4zj+2zAMoe/70HVdaNs2NE0T6roOVVWFqqpCWZahKIpQFEVomubr9H3/2T0syxKWZQnruoaPMeZv27aFbduC9z4454JzLjjngrU2WGuDMebvWmttsNYGa22w1gZjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMaEXwAAAP//VWQb+8xYFw4AAAAASUVORK5CYII=');
-            width: 100px;
-            height: 40px;
-            background-size: contain;
-            animation: moneySpin 20s infinite linear;
-        }
-
-        @keyframes moneySpin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
+        .flicker {
+            animation: flicker 0.1s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="handle" id="badangels">@badangels</div>
-    <div class="handle" id="advokat">@адвокатура</div>
-    <div class="handle" id="prosecutor">@edit by angel</div>
-
-    <div class="poem gradient-text">
-        ногам ходу
-        голове приходу
-        
-        матушку удачу
-        сто тузов по сдачу
-        
-        ходу воровскому
-        смерти мусорскому
+    <div class="ui-element" id="badangels">@badangels</div>
+    <div class="ui-element" id="advokat">@адвокатура</div>
+    <div class="ui-element poem">
+        <span class="line">ногам ходу</span>
+        <span class="line">голове приходу</span>
+        <span class="line">матушку удачу</span>
+        <span class="line">сто тузов по сдачу</span>
+        <span class="line">ходу воровскому</span>
+        <span class="line">смерти мусорскому</span>
     </div>
+    <div class="ui-element" id="connection-status">▲ ENCRYPTED CONNECTION [TOR v3] ▼ PING 67ms ▼ THREAT LEVEL: 0</div>
 
-    <div id="audioControl">€ ВКЛ/ВЫКЛ</div>
-    <div class="connection-status">🔒 ENCRYPTED CONNECTION • PING 67ms</div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Генерация денежных эффектов
-        function createMoney() {
-            const types = ['bill', 'sign', 'stack'];
-            const money = document.createElement('div');
+        // Анимация текста
+        setTimeout(() => {
+            document.querySelectorAll('.line').forEach(line => {
+                line.classList.add('flicker');
+                line.style.animationDelay = `${Math.random() * 0.5}s`;
+            });
+        }, 7000);
+
+        // Конфигурация 3D
+        const CONFIG = {
+            objectsCount: 100,
+            rotationSpeed: 0.02,
+            mouseInfluence: 0.2,
+            particleSize: 0.5,
+            floatIntensity: 0.1
+        };
+
+        // Инициализация 3D-сцены
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Генератор текстур
+        const generateMoneyTexture = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
             
-            switch(types[Math.floor(Math.random()*3)]) {
-                case 'bill':
-                    money.className = 'effect money-bill';
-                    money.innerHTML = `<div class="money-img"></div>`;
-                    break;
-                    
-                case 'sign':
-                    money.className = 'effect dollar-sign';
-                    money.textContent = '$';
-                    break;
-                    
-                case 'stack':
-                    money.className = 'effect';
-                    money.innerHTML = `
-                        <div style="position:relative">
-                            <div class="money-img" style="position:absolute"></div>
-                            <div class="money-img" style="position:absolute;top:5px;left:5px"></div>
-                            <div class="money-img" style="position:absolute;top:10px;left:10px"></div>
-                        </div>
-                    `;
-                    break;
-            }
+            ctx.fillStyle = '#85BB65';
+            ctx.fillRect(0, 0, 256, 128);
+            ctx.fillStyle = '#000';
+            ctx.font = '20px Arial';
+            ctx.fillText('■■■■ 100 ■■■■', 30, 64);
             
-            money.style.left = Math.random() * 100 + 'vw';
-            money.style.animationDelay = Math.random() * 5 + 's';
-            document.body.appendChild(money);
+            return new THREE.CanvasTexture(canvas);
+        };
+
+        // Система частиц
+        const particles = new THREE.BufferGeometry();
+        const positions = [];
+        const velocities = [];
+
+        for(let i = 0; i < CONFIG.objectsCount; i++) {
+            positions.push(
+                Math.random() * 100 - 50,
+                Math.random() * 100 - 50,
+                Math.random() * 100 - 50
+            );
+            velocities.push(
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1
+            );
         }
 
-        // Запуск генерации денег
-        setInterval(() => {
-            createMoney();
-            createMoney();
-        }, 500);
+        particles.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        particles.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
 
-        // Очистка старых элементов
-        setInterval(() => {
-            document.querySelectorAll('.effect').forEach(el => {
-                if(el.getBoundingClientRect().top > window.innerHeight) {
-                    el.remove();
-                }
-            });
-        }, 5000);
-
-        // Аудио элементы (добавьте свой трек)
-        const audio = new Audio();
-        document.getElementById('audioControl').addEventListener('click', () => {
-            audio.paused ? audio.play() : audio.pause();
+        const particleMaterial = new THREE.PointsMaterial({
+            size: CONFIG.particleSize,
+            map: generateMoneyTexture(),
+            transparent: true,
+            blending: THREE.AdditiveBlending
         });
 
-        // Мерцание текста
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+
+        // Освещение
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+
+        // Камера
+        camera.position.z = 100;
+
+        // Мышиная интерактивность
+        const mouse = new THREE.Vector2();
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Анимация 3D
+        const clock = new THREE.Clock();
+        const animate = () => {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            // Обновление частиц
+            const positions = particles.attributes.position.array;
+            const velocities = particles.attributes.velocity.array;
+
+            for(let i = 0; i < CONFIG.objectsCount * 3; i += 3) {
+                const dx = mouse.x * 50 - positions[i];
+                const dy = mouse.y * 50 - positions[i+1];
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if(dist < 20) {
+                    velocities[i] += dx * 0.0001 * CONFIG.mouseInfluence;
+                    velocities[i+1] += dy * 0.0001 * CONFIG.mouseInfluence;
+                }
+
+                velocities[i+1] += 0.001;
+                positions[i] += velocities[i];
+                positions[i+1] += velocities[i+1];
+                positions[i+2] += velocities[i+2];
+
+                ['x', 'y', 'z'].forEach((axis, idx) => {
+                    if(Math.abs(positions[i+idx]) > 50) {
+                        velocities[i+idx] *= -0.8;
+                    }
+                });
+            }
+
+            particles.attributes.position.needsUpdate = true;
+            particleSystem.rotation.x += CONFIG.rotationSpeed * delta;
+            particleSystem.rotation.y += CONFIG.rotationSpeed * delta;
+
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        // Адаптация к размеру окна
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Глитч-эффекты для текста
         setInterval(() => {
-            document.querySelectorAll('.handle, .poem').forEach(text => {
-                text.style.opacity = Math.random() * 0.3 + 0.7;
+            document.querySelectorAll('.ui-element').forEach(el => {
+                el.style.transform = `
+                    translate(
+                        ${Math.random() * 2 - 1}px,
+                        ${Math.random() * 2 - 1}px
+                    )
+                    skew(${Math.random() * 0.5}deg)
+                `;
+                el.style.opacity = 0.9 + Math.random() * 0.1;
             });
-        }, 100);
+        }, 50);
     </script>
 </body>
 </html>

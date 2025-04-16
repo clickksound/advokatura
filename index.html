@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>t.me/badangels</title>
+    <title>Black Angel</title>
     <style>
         body {
             background: #000;
@@ -12,21 +12,30 @@
             font-family: 'Arial', sans-serif;
             min-height: 100vh;
             position: relative;
+            overflow: hidden;
         }
 
         .handle {
             position: absolute;
-            right: 20px;
             font-size: 1.2em;
             text-shadow: 0 0 5px rgba(255,255,255,0.3);
+            z-index: 2;
         }
 
         #badangels {
             top: 20px;
+            right: 20px;
         }
 
         #advokat {
             top: 50px;
+            right: 20px;
+        }
+
+        #prosecutor {
+            top: 20px;
+            left: 20px;
+            color: #ff4444;
         }
 
         .poem {
@@ -39,6 +48,7 @@
             line-height: 1.8;
             white-space: pre-wrap;
             text-shadow: 0 0 8px rgba(255,255,255,0.4);
+            z-index: 2;
         }
 
         .gradient-text {
@@ -48,16 +58,48 @@
             color: transparent;
             font-weight: bold;
         }
+
+        /* Эффекты заднего фона */
+        .effect {
+            position: absolute;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        .handcuffs {
+            width: 50px;
+            filter: invert(1);
+        }
+
+        .money {
+            width: 70px;
+            animation-duration: 8s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Аудио-контрол */
+        #audioControl {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3;
+            cursor: pointer;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
-    <div class="handle" id="badangels">t.me/badangels</div>
-    <div class="handle" id="advokat">created by advokatura</div>
-    
+    <div class="handle" id="badangels">@badangels</div>
+    <div class="handle" id="advokat">@адвокатура</div>
+    <div class="handle" id="prosecutor">@районый_прокурор</div>
+
     <div class="poem gradient-text">
         ногам ходу
         голове приходу
-       
         матушку удачу
         сто тузов по сдачу
         
@@ -65,8 +107,45 @@
         смерти мусорскому
     </div>
 
+    <div id="audioControl">?? ВКЛ/ВЫКЛ</div>
+
     <script>
-        // Добавляем мерцание тексту
+        // Генерация фоновых эффектов
+        function createEffect(className, src) {
+            const effect = document.createElement('img');
+            effect.className = effect ${className};
+            effect.src = src;
+            effect.style.left = Math.random() * 100 + 'vw';
+            effect.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(effect);
+        }
+
+        // Загрузка изображений
+        const handcuffsImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABwElEQVRoge2Zv0scQRjHP7sXjYgKoiBYiBZBa0tBECt/gVjY2FjYWFjY2FhYWFjYWFjY2FhY2EQsbCwEQRARCYh6cHB3+8Nidndmdm/37u44PZvvH5idnX3e7zsz78w7C4qiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKMo9wTj8PAHmgXfAC2ASGAX6gB6gA7gEzoATYBfYBNaAZeCgHmFfQ6QJfAbeAq0a22gBH4DPwE2tQkHgYx0iRf4Cb2oR+gH8bVCo4DfwuhqhH8B5g0IF58Ary6K/8bM9Jb6FhX7h9/YU+RoS+o2/7SnyxQj9wf/2FPlkhLbwvz1Ftg2hXfxvT5EtQ2gH/9tTZMsQ2sT/9hTZNIQ28L89RTYMoXX8b0+RNUNoDf/bU2TNEFrF//YUWTOEVvC/PUX+GEIr+N+eIn8MoWX8b0+RP4bQEv63p8iiIbSI/+0psmgILeB/e4rMG0Lz+N+eIvOG0Df8b0+Rb4bQHP63p8icITSL/+0pMmsIfcX/9hSZNYS+4H97iswYQp/xvz1FZgyhT/jfniLThlCb/+0pMm0Itflfz4oh1Mb/elYMoRb/61kxhFr8r2fFEGrxv54VQ6jF/3pWDKEW/+tZMYRa/K9nxRBq8b+eFUOoxf96VgyhFv/rWTGEWvyvZ8UQavG/nhVDqMX/elYMoRb/61kxhFr8r2fFEJryv54VQ2jK/3pWDKEp/+tZMYSm/K9nxRCa8r+eFUNo0v96VgwhNf/rWTGE1PyvZ8UQUvO/nhVDSM3/elYMITX/61kxhNT8r2fFEJryv54VQ2jK/3pWDKEp/+tZMYSY/69nxRBi/r+eFUOI+f96Vgwh5v/rWTGEmP+vZ8UQYv6/nhVDiPn/elYMISX/61kxhJT8r2fFEFLzv54VQ0jN/3pWDCFF/+tZMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r8d/0qGNZ0OQ+QwAAAAASUVORK5CYII=';
+        
+        const moneyImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABYklEQVRoge3ZMU7CUBSA4b+1C4m6GBMXZ3+Dm4ODk5OTk5OTk5OTk5OTk5OLiYkLCQkxJkYHXQjE9hYf0FLeV9qE3uSbc0JfLr09txQAAAAAAAAAAAAAAGB4hq0HrqVqSXpL0oXk3n3zX9qV9Crp3sx+2g4Fd4ibJN1JOpX0IelJ0p2kq1RzO5LOJT1L2pP0aGbHZnbfZiq4Q3YlXUo6kPRqZkeSLiQdS3pINHcgaUPSk6RNSddmdiLpKtVccIc4SWdmtiHpVtKhpDdJm5KuEs1tSXqXtC7pRtKppE9Jm6nm/ir7Q9z9w93P3X1N0pWkbUlvkrbc/SbB3KqkT0mrkm4lnUn6krTh7ve/zQV3SJm7P7r7rqR7SbuSHiTtuftjgrmypLKkC0nfktbd/SnFXFmth7j7l7ufufuKpBtJe5LeJW25+22DuRVJP5JWJN1JOpf0LWnN3Z9/mwvukCru/ujuh5IeJe1IepS07+4vDeZWJX1LWpZ0K+lC0o+kNXd/qZoL7pC63P3e3fclPUvalvQk6cDdXxvMLUv6krQk6V7ShaQfScvu/lqYC+6QRtz9zt0PJL1I2pL0LOnI3d8azC1J+pS0KOlB0qWkH0mL7v5WmAvukLrc/dbdjyS9StqU9Czp2N3fG8wtSvqQtCDpUdKlpG9JC+7+XpgL7hAAAAAAAAAAAAAAADCwfwCJq4sT0GjgbAAAAABJRU5ErkJggg==';
+
+        // Создание эффектов каждые 2 секунды
+        setInterval(() => {
+            createEffect('handcuffs', handcuffsImg);
+            createEffect('money', moneyImg);
+        }, 2000);
+
+        // Музыка и управление
+        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); // Замените ссылкой на нужный трек
+        audio.loop = true;
+        
+        document.getElementById('audioControl').addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                document.body.style.filter = 'contrast(120%)';
+            } else {
+                audio.pause();
+                document.body.style.filter = 'none';
+            }
+        });
+
+        // Мерцание текста
         setInterval(() => {
             const texts = document.querySelectorAll('.handle, .poem');
             texts.forEach(text => {

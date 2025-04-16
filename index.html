@@ -22,21 +22,9 @@
             z-index: 2;
         }
 
-        #badangels {
-            top: 20px;
-            right: 20px;
-        }
-
-        #advokat {
-            top: 50px;
-            right: 20px;
-        }
-
-        #prosecutor {
-            top: 20px;
-            left: 20px;
-            color: #ff4444;
-        }
+        #badangels { top: 20px; right: 20px; }
+        #advokat { top: 50px; right: 20px; }
+        #prosecutor { top: 20px; left: 20px; color: #ff4444; }
 
         .poem {
             position: absolute;
@@ -59,29 +47,39 @@
             font-weight: bold;
         }
 
-        /* Эффекты заднего фона */
         .effect {
             position: absolute;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
+            opacity: 0.4;
+            animation-timing-function: linear;
+            pointer-events: none;
         }
 
-        .handcuffs {
-            width: 50px;
-            filter: invert(1);
+        .money-bill {
+            width: 120px;
+            animation: moneyFloat 15s infinite;
+            filter: hue-rotate(90deg);
         }
 
-        .money {
-            width: 70px;
-            animation-duration: 8s;
+        @keyframes moneyFloat {
+            0% {
+                transform: translateY(-100vh) rotateX(0deg) rotateZ(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotateX(360deg) rotateZ(360deg);
+            }
         }
 
-        @keyframes float {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
+        .dollar-sign {
+            color: #85bb65;
+            font-size: 24px;
+            animation: dollarFlow 8s infinite;
         }
 
-        /* Аудио-контрол */
+        @keyframes dollarFlow {
+            0% { transform: translateX(-100vw) rotate(0deg); }
+            100% { transform: translateX(100vw) rotate(360deg); }
+        }
+
         #audioControl {
             position: fixed;
             bottom: 20px;
@@ -90,12 +88,38 @@
             cursor: pointer;
             color: #fff;
         }
+
+        .connection-status {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-shadow: 0 0 5px #00ff00;
+            z-index: 4;
+        }
+
+        /* Базовые изображения в Base64 */
+        .money-img {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACLElEQVR4nO2aQY7DIAxFXc1ZcoZepWfpVXqWHrE7VhOjEBJIwHhI1PcrCzD+PrYJEEIIIYQQQgghhBBCCCGEEEIIIeR1uK4rXJYlzPMcpmkK4zj+2zAMoe/70HVdaNs2NE0T6roOVVWFqqpCWZahKIpQFEVomubr9H3/2T0syxKWZQnruoaPMeZv27aFbduC9z4454JzLjjngrU2WGuDMebvWmttsNYGa22w1gZjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMYEY0wwxgRjTDDGBGNMMMaEXwAAAP//VWQb+8xYFw4AAAAASUVORK5CYII=');
+            width: 100px;
+            height: 40px;
+            background-size: contain;
+            animation: moneySpin 20s infinite linear;
+        }
+
+        @keyframes moneySpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
     </style>
 </head>
 <body>
     <div class="handle" id="badangels">@badangels</div>
     <div class="handle" id="advokat">@адвокатура</div>
-    <div class="handle" id="prosecutor">@prada_advokatixs</div>
+    <div class="handle" id="prosecutor">@edit by angel</div>
 
     <div class="poem gradient-text">
         ногам ходу
@@ -108,49 +132,68 @@
         смерти мусорскому
     </div>
 
-    <div id="audioControl">8 ВКЛ/ВЫКЛ</div>
+    <div id="audioControl">€ ВКЛ/ВЫКЛ</div>
+    <div class="connection-status">🔒 ENCRYPTED CONNECTION • PING 67ms</div>
 
     <script>
-        // Генерация фоновых эффектов
-        function createEffect(className, src) {
-            const effect = document.createElement('img');
-            effect.className = `effect ${className}`;
-            effect.src = src;
-            effect.style.left = Math.random() * 100 + 'vw';
-            effect.style.animationDelay = Math.random() * 5 + 's';
-            document.body.appendChild(effect);
+        // Генерация денежных эффектов
+        function createMoney() {
+            const types = ['bill', 'sign', 'stack'];
+            const money = document.createElement('div');
+            
+            switch(types[Math.floor(Math.random()*3)]) {
+                case 'bill':
+                    money.className = 'effect money-bill';
+                    money.innerHTML = `<div class="money-img"></div>`;
+                    break;
+                    
+                case 'sign':
+                    money.className = 'effect dollar-sign';
+                    money.textContent = '$';
+                    break;
+                    
+                case 'stack':
+                    money.className = 'effect';
+                    money.innerHTML = `
+                        <div style="position:relative">
+                            <div class="money-img" style="position:absolute"></div>
+                            <div class="money-img" style="position:absolute;top:5px;left:5px"></div>
+                            <div class="money-img" style="position:absolute;top:10px;left:10px"></div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            money.style.left = Math.random() * 100 + 'vw';
+            money.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(money);
         }
 
-        // Загрузка изображений
-        const handcuffsImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABwElEQVRoge2Zv0scQRjHP7sXjYgKoiBYiBZBa0tBECt/gVjY2FjYWFjY2FhYWFjYWFjY2FhY2EQsbCwEQRARCYh6cHB3+8Nidndmdm/37u44PZvvH5idnX3e7zsz78w7C4qiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKIqiKMo9wTj8PAHmgXfAC2ASGAX6gB6gA7gEzoATYBfYBNaAZeCgHmFfQ6QJfAbeAq0a22gBH4DPwE2tQkHgYx0iRf4Cb2oR+gH8bVCo4DfwuhqhH8B5g0IF58Ary6K/8bM9Jb6FhX7h9/YU+RoS+o2/7SnyxQj9wf/2FPlkhLbwvz1Ftg2hXfxvT5EtQ2gH/9tTZMsQ2sT/9hTZNIQ28L89RTYMoXX8b0+RNUNoDf/bU2TNEFrF//YUWTOEVvC/PUX+GEIr+N+eIn8MoWX8b0+RP4bQEv63p8iiIbSI/+0psmgILeB/e4rMG0Lz+N+eIvOG0Df8b0+Rb4bQHP63p8icITSL/+0pMmsIfcX/9hSZNYS+4H97iswYQp/xvz1FZgyhT/jfniLThlCb/+0pMm0Itflfz4oh1Mb/elYMoRb/61kxhFr8r2fFEGrxv54VQ6jF/3pWDKEW/+tZMYRa/K9nxRBq8b+eFUOoxf96VgyhFv/rWTGEWvyvZ8UQavG/nhVDqMX/elYMoRb/61kxhFr8r2fFEJryv54VQ2jK/3pWDKEp/+tZMYSm/K9nxRCa8r+eFUNo0v96VgwhNf/rWTGE1PyvZ8UQUvO/nhVDSM3/elYMITX/61kxhNT8r2fFEJryv54VQ2jK/3pWDKEp/+tZMYSY/69nxRBi/r+eFUOI+f96Vgwh5v/rWTGEmP+vZ8UQYv6/nhVDiPn/elYMISX/61kxhJT8r2fFEFLzv54VQ0jN/3pWDCFF/+tZMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r4cVQ/DV/3pYMQRf/a+HFUPw1f96WDEEX/2vhxVD8NX/elgxBF/9r8d/0qGNZ0OQ+QwAAAAASUVORK5CYII=';
-        
-        const moneyImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABYklEQVRoge3ZMU7CUBSA4b+1C4m6GBMXZ3+Dm4ODk5OTk5OTk5OTk5OTk5OLiYkLCQkxJkYHXQjE9hYf0FLeV9qE3uSbc0JfLr09txQAAAAAAAAAAAAAAGB4hq0HrqVqSXpL0oXk3n3zX9qV9Crp3sx+2g4Fd4ibJN1JOpX0IelJ0p2kq1RzO5LOJT1L2pP0aGbHZnbfZiq4Q3YlXUo6kPRqZkeSLiQdS3pINHcgaUPSk6RNSddmdiLpKtVccIc4SWdmtiHpVtKhpDdJm5KuEs1tSXqXtC7pRtKppE9Jm6nm/ir7Q9z9w93P3X1N0pWkbUlvkrbc/SbB3KqkT0mrkm4lnUn6krTh7ve/zQV3SJm7P7r7rqR7SbuSHiTtuftjgrmypLKkC0nfktbd/SnFXFmth7j7l7ufufuKpBtJe5LeJW25+22DuRVJP5JWJN1JOpf0LWnN3Z9/mwvukCru/ujuh5IeJe1IepS07+4vDeZWJX1LWpZ0K+lC0o+kNXd/qZoL7pC63P3e3fclPUvalvQk6cDdXxvMLUv6krQk6V7ShaQfScvu/lqYC+6QRtz9zt0PJL1I2pL0LOnI3d8azC1J+pS0KOlB0qWkH0mL7v5WmAvukLrc/dbdjyS9StqU9Czp2N3fG8wtSvqQtCDpUdKlpG9JC+7+XpgL7hAAAAAAAAAAAAAAADCwfwCJq4sT0GjgbAAAAABJRU5ErkJggg==';
-
-        // Создание эффектов каждые 2 секунды
+        // Запуск генерации денег
         setInterval(() => {
-            createEffect('handcuffs', handcuffsImg);
-            createEffect('money', moneyImg);
-        }, 2000);
+            createMoney();
+            createMoney();
+        }, 500);
 
-        // Музыка и управление
-        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); // Замените ссылкой на нужный трек
-        audio.loop = true;
-        
+        // Очистка старых элементов
+        setInterval(() => {
+            document.querySelectorAll('.effect').forEach(el => {
+                if(el.getBoundingClientRect().top > window.innerHeight) {
+                    el.remove();
+                }
+            });
+        }, 5000);
+
+        // Аудио элементы (добавьте свой трек)
+        const audio = new Audio();
         document.getElementById('audioControl').addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                document.body.style.filter = 'contrast(120%)';
-            } else {
-                audio.pause();
-                document.body.style.filter = 'none';
-            }
+            audio.paused ? audio.play() : audio.pause();
         });
 
         // Мерцание текста
         setInterval(() => {
-            const texts = document.querySelectorAll('.handle, .poem');
-            texts.forEach(text => {
-                text.style.opacity = Math.random() * 0.2 + 0.8;
+            document.querySelectorAll('.handle, .poem').forEach(text => {
+                text.style.opacity = Math.random() * 0.3 + 0.7;
             });
         }, 100);
     </script>

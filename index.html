@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>t.me/badangels </title>
+    <title>т.ме/badangels</title>
     <style>
         body { 
             margin: 0;
@@ -12,8 +12,8 @@
         }
         .ui-element {
             position: fixed;
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
             mix-blend-mode: screen;
             z-index: 1000;
             pointer-events: none;
@@ -24,30 +24,31 @@
         #badangels { top: 2vh; right: 2vw; font-size: 1.5em; }
         #advokat { top: 8vh; right: 2vw; font-size: 1.2em; }
         .poem {
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 2em;
+            font-size: 2.5em;
             line-height: 1.5;
-            white-space: pre;
+            width: 100%;
         }
         #connection-status {
             bottom: 2vh;
             left: 2vw;
-            font-size: 0.9em;
+            font-size: 1em;
+            color: #00ff00;
         }
         canvas {
-            filter: contrast(120%) brightness(90%);
+            filter: contrast(130%) brightness(80%);
         }
 
-        /* Новая анимация текста */
         .line {
             display: block;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
             animation: lineAppear 1s forwards;
-            margin: 15px 0;
+            margin: 20px 0;
             position: relative;
         }
 
@@ -62,22 +63,31 @@
             }
         }
 
-        @keyframes flicker {
-            0% { color: #0f0; text-shadow: 0 0 10px #0f0; }
-            50% { color: #000; text-shadow: none; }
-            100% { color: #0f0; text-shadow: 0 0 10px #0f0; }
+        @keyframes textFlicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 20px #fff; }
+            50% { opacity: 0.8; text-shadow: none; }
         }
 
-        /* Задержки для строк */
-        .line:nth-child(1) { animation-delay: 1s; }
-        .line:nth-child(2) { animation-delay: 2s; }
-        .line:nth-child(3) { animation-delay: 3s; }
-        .line:nth-child(4) { animation-delay: 4s; }
-        .line:nth-child(5) { animation-delay: 5s; }
-        .line:nth-child(6) { animation-delay: 6s; }
+        .line:nth-child(1) { animation-delay: 0.5s; }
+        .line:nth-child(2) { animation-delay: 1.5s; }
+        .line:nth-child(3) { animation-delay: 2.5s; }
+        .line:nth-child(4) { animation-delay: 3.5s; }
+        .line:nth-child(5) { animation-delay: 4.5s; }
+        .line:nth-child(6) { animation-delay: 5.5s; }
 
         .flicker {
-            animation: flicker 0.1s infinite;
+            animation: textFlicker 0.15s infinite;
+        }
+
+        .cursor::after {
+            content: '_';
+            animation: cursorBlink 1s infinite;
+            position: absolute;
+            right: -15px;
+        }
+
+        @keyframes cursorBlink {
+            50% { opacity: 0; }
         }
     </style>
 </head>
@@ -85,161 +95,150 @@
     <div class="ui-element" id="badangels">@badangels</div>
     <div class="ui-element" id="advokat">@адвокатура</div>
     <div class="ui-element poem">
-        <span class="line">ногам ходу</span>
-        <span class="line">голове приходу</span>
-        <span class="line">матушку удачу</span>
-        <span class="line">сто тузов по сдачу</span>
-        <span class="line">ходу воровскому</span>
-        <span class="line">смерти мусорскому</span>
+        <span class="line cursor">ногам ходу</span>
+        <span class="line cursor">голове приходу</span>
+        <span class="line cursor">матушку удачу</span>
+        <span class="line cursor">сто тузов по сдачу</span>
+        <span class="line cursor">ходу воровскому</span>
+        <span class="line cursor">смерти мусорскому</span>
     </div>
-    <div class="ui-element" id="connection-status">▲ ENCRYPTED CONNECTION [TOR v3] ▼ PING 67ms ▼ THREAT LEVEL: 0</div>
+    <div class="ui-element" id="connection-status">▲ ENCRYPTED CONNECTION [TOR v3.4] ▼ PING 67ms ▼ THREAT LEVEL: ZERO</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Анимация текста
+        // Текстовая анимация
         setTimeout(() => {
             document.querySelectorAll('.line').forEach(line => {
                 line.classList.add('flicker');
-                line.style.animationDelay = `${Math.random() * 0.5}s`;
+                line.style.animationDelay = `${Math.random() * 0.3}s`;
             });
-        }, 7000);
+        }, 6500);
 
-        // Конфигурация 3D
+        // 3D Конфигурация
         const CONFIG = {
-            objectsCount: 100,
-            rotationSpeed: 0.02,
-            mouseInfluence: 0.2,
-            particleSize: 0.5,
-            floatIntensity: 0.1
+            particles: 300,
+            rotation: 0.005,
+            mouseForce: 0.5,
+            size: 1.2,
+            velocity: 0.25
         };
 
-        // Инициализация 3D-сцены
+        // Инициализация сцены
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(innerWidth, innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Генератор текстур
-        const generateMoneyTexture = () => {
+        // Генератор 3D долларов
+        const dollarTexture = () => {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
-            canvas.height = 128;
+            canvas.height = 256;
             const ctx = canvas.getContext('2d');
             
             ctx.fillStyle = '#85BB65';
-            ctx.fillRect(0, 0, 256, 128);
-            ctx.fillStyle = '#000';
-            ctx.font = '20px Arial';
-            ctx.fillText('■■■■ 100 ■■■■', 30, 64);
+            ctx.font = 'bold 200px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('$', 128, 128);
             
             return new THREE.CanvasTexture(canvas);
         };
 
         // Система частиц
-        const particles = new THREE.BufferGeometry();
-        const positions = [];
-        const velocities = [];
+        const geometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(CONFIG.particles * 3);
+        const velArray = new Float32Array(CONFIG.particles * 3);
 
-        for(let i = 0; i < CONFIG.objectsCount; i++) {
-            positions.push(
-                Math.random() * 100 - 50,
-                Math.random() * 100 - 50,
-                Math.random() * 100 - 50
-            );
-            velocities.push(
-                (Math.random() - 0.5) * 0.1,
-                (Math.random() - 0.5) * 0.1,
-                (Math.random() - 0.5) * 0.1
-            );
+        for(let i = 0; i < CONFIG.particles * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 200;
+            velArray[i] = (Math.random() - 0.5) * CONFIG.velocity;
         }
 
-        particles.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        particles.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        geometry.setAttribute('velocity', new THREE.BufferAttribute(velArray, 3));
 
-        const particleMaterial = new THREE.PointsMaterial({
-            size: CONFIG.particleSize,
-            map: generateMoneyTexture(),
+        const material = new THREE.PointsMaterial({
+            size: CONFIG.size,
+            map: dollarTexture(),
             transparent: true,
-            blending: THREE.AdditiveBlending
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
         });
 
-        const particleSystem = new THREE.Points(particles, particleMaterial);
-        scene.add(particleSystem);
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
 
         // Освещение
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
 
-        // Камера
-        camera.position.z = 100;
+        // Позиция камеры
+        camera.position.z = 200;
 
-        // Мышиная интерактивность
+        // Обработка мыши
         const mouse = new THREE.Vector2();
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        addEventListener('mousemove', e => {
+            mouse.x = (e.clientX / innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / innerHeight) * 2 + 1;
         });
 
-        // Анимация 3D
+        // Анимационный цикл
         const clock = new THREE.Clock();
-        const animate = () => {
+        function animate() {
             requestAnimationFrame(animate);
             const delta = clock.getDelta();
+            const time = clock.elapsedTime;
 
-            // Обновление частиц
-            const positions = particles.attributes.position.array;
-            const velocities = particles.attributes.velocity.array;
+            const positions = geometry.attributes.position.array;
+            const velocities = geometry.attributes.velocity.array;
 
-            for(let i = 0; i < CONFIG.objectsCount * 3; i += 3) {
-                const dx = mouse.x * 50 - positions[i];
-                const dy = mouse.y * 50 - positions[i+1];
-                const dist = Math.sqrt(dx*dx + dy*dy);
+            for(let i = 0; i < CONFIG.particles * 3; i += 3) {
+                // Взаимодействие с мышью
+                const dx = mouse.x * 150 - positions[i];
+                const dy = mouse.y * 150 - positions[i+1];
+                const distance = Math.sqrt(dx*dx + dy*dy);
 
-                if(dist < 20) {
-                    velocities[i] += dx * 0.0001 * CONFIG.mouseInfluence;
-                    velocities[i+1] += dy * 0.0001 * CONFIG.mouseInfluence;
+                if(distance < 50) {
+                    velocities[i] += dx * 0.0002 * CONFIG.mouseForce;
+                    velocities[i+1] += dy * 0.0002 * CONFIG.mouseForce;
                 }
 
-                velocities[i+1] += 0.001;
+                // Динамическое движение
                 positions[i] += velocities[i];
                 positions[i+1] += velocities[i+1];
                 positions[i+2] += velocities[i+2];
 
-                ['x', 'y', 'z'].forEach((axis, idx) => {
-                    if(Math.abs(positions[i+idx]) > 50) {
-                        velocities[i+idx] *= -0.8;
-                    }
-                });
+                // Граничные условия
+                if(Math.abs(positions[i]) > 100) velocities[i] *= -0.9;
+                if(Math.abs(positions[i+1]) > 100) velocities[i+1] *= -0.9;
+                if(Math.abs(positions[i+2]) > 100) velocities[i+2] *= -0.9;
             }
 
-            particles.attributes.position.needsUpdate = true;
-            particleSystem.rotation.x += CONFIG.rotationSpeed * delta;
-            particleSystem.rotation.y += CONFIG.rotationSpeed * delta;
+            geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y += CONFIG.rotation * delta;
 
             renderer.render(scene, camera);
-        };
+        }
         animate();
 
         // Адаптация к размеру окна
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+        addEventListener('resize', () => {
+            camera.aspect = innerWidth / innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(innerWidth, innerHeight);
         });
 
-        // Глитч-эффекты для текста
+        // Случайные колебания текста
         setInterval(() => {
             document.querySelectorAll('.ui-element').forEach(el => {
                 el.style.transform = `
                     translate(
-                        ${Math.random() * 2 - 1}px,
-                        ${Math.random() * 2 - 1}px
+                        ${(Math.random() - 0.5) * 4}px,
+                        ${(Math.random() - 0.5) * 4}px
                     )
-                    skew(${Math.random() * 0.5}deg)
                 `;
-                el.style.opacity = 0.9 + Math.random() * 0.1;
             });
         }, 50);
     </script>

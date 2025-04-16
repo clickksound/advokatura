@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Black Angel</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .handle {
+            position: absolute;
+            right: 20px;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        #badangels {
+            top: 20px;
+        }
+
+        #advokat {
+            top: 50px;
+        }
+
+        .poem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 1.5em;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            text-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #aaa, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="handle" id="badangels">@badangels</div>
+    <div class="handle" id="advokat">@адвокатура</div>
+
+    <div class="poem gradient-text">
+        ногам ходу
+        голове приходу
+        матушку удачу
+        сто тузов по сдачу
+        
+        ходу воровскому
+        смерти мусорскому
+    </div>
+
+    <script>
+        // Добавляем мерцание тексту
+        setInterval(() => {
+            const texts = document.querySelectorAll('.handle, .poem');
+            texts.forEach(text => {
+                text.style.opacity = Math.random() * 0.2 + 0.8;
+            });
+        }, 100);
+    </script>
+</body>
+</html>
